@@ -21,6 +21,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
         // Cargar datos según la sección
         if (sectionId === 'productos') {
             cargarProductos();
+            cargarArtesanasSelect();
         } else if (sectionId === 'pedidos') {
             cargarPedidos();
             cargarEstadisticas();
@@ -55,10 +56,36 @@ async function hacerPeticion(url, opciones = {}) {
     }
 }
 
+// ============ ARTESANAS (UTILIDAD PARA SELECT DE PRODUCTOS) ============
+async function cargarArtesanasSelect() {
+    const select = document.getElementById('prodArtesanaSelect');
+    if (!select) return;
+
+    try {
+        const data = await hacerPeticion(`${API_BASE_URL}/artesanas`);
+        const artesanas = data.datos || [];
+
+        if (artesanas.length === 0) {
+            select.innerHTML = '<option value="">No hay artesanas registradas</option>';
+            return;
+        }
+
+        select.innerHTML = [
+            '<option value="">Seleccionar artesana...</option>',
+            ...artesanas.map(a => `<option value="${a.id}">${a.nombre} — ${a.especialidad}</option>`)
+        ].join('');
+    } catch (error) {
+        console.error('Error al cargar artesanas para el select:', error);
+    }
+}
+
 // ============ PRODUCTOS ============
 document.getElementById('formProducto')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    const artesanaSelect = document.getElementById('prodArtesanaSelect');
+    const artesanaSeleccionada = artesanaSelect?.value || '';
+
     const producto = {
         nombre: document.getElementById('prodNombre').value,
         tipo: document.getElementById('prodTipo').value,
@@ -66,7 +93,7 @@ document.getElementById('formProducto')?.addEventListener('submit', async (e) =>
         materiales: document.getElementById('prodMateriales').value,
         precio: parseFloat(document.getElementById('prodPrecio').value),
         stock: parseInt(document.getElementById('prodStock').value),
-        artesana_id: document.getElementById('prodArtesanaId').value || null
+        artesana_id: artesanaSeleccionada ? parseInt(artesanaSeleccionada, 10) : null
     };
 
     try {
@@ -78,6 +105,7 @@ document.getElementById('formProducto')?.addEventListener('submit', async (e) =>
         
         mostrarMensaje('Producto creado exitosamente', 'success');
         document.getElementById('formProducto').reset();
+        cargarArtesanasSelect();
         cargarProductos();
     } catch (error) {
         console.error('Error:', error);
@@ -296,6 +324,7 @@ document.getElementById('formArtesana')?.addEventListener('submit', async (e) =>
         mostrarMensaje('Artesana registrada exitosamente', 'success');
         document.getElementById('formArtesana').reset();
         cargarArtesanas();
+        cargarArtesanasSelect();
     } catch (error) {
         console.error('Error:', error);
     }
