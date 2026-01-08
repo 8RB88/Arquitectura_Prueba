@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGV-APS - Sistema de Gestión de Artesanías Saraguro</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🏺 SGV-APS</h1>
+                <p>Sistema de Gestión y Venta de Artesanías del Pueblo Saraguro</p>
+            </div>
+        </header>
+
+        <!-- Navegación -->
+        <nav class="navbar">
+            <button class="nav-btn active" data-section="inicio">Inicio</button>
+            <button class="nav-btn" data-section="productos">Productos</button>
+            <button class="nav-btn" data-section="pedidos">Pedidos</button>
+            <button class="nav-btn" data-section="artesanas">Artesanas</button>
+            <button class="nav-btn" data-section="eventos">Eventos</button>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <main class="content">
+            <!-- SECCIÓN: INICIO -->
+            <section id="inicio" class="section active">
+                <h2>Bienvenido al Sistema</h2>
+                <div class="welcome-grid">
+                    <div class="card">
+                        <h3>📦 Gestión de Productos</h3>
+                        <p>Administra el catálogo de artesanías: collares, aretes, manillas y más.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🛒 Gestión de Pedidos</h3>
+                        <p>Registra y monitorea los pedidos de clientes locales y turistas.</p>
+                    </div>
+                    <div class="card">
+                        <h3>👩‍🦱 Artesanas</h3>
+                        <p>Administra el registro de artesanas y sus especialidades.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🎉 Eventos y Ferias</h3>
+                        <p>Promociona eventos locales y productos destacados.</p>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h3>ℹ️ Arquitectura del Sistema</h3>
+                    <p><strong>Tipo:</strong> Arquitectura Cliente/Servidor de 3 Capas</p>
+                    <p><strong>Componentes:</strong></p>
+                    <ul>
+                        <li>🎨 Capa de Presentación (Frontend HTML/CSS/JavaScript)</li>
+                        <li>⚙️ Capa de Lógica de Negocio (Node.js/Express)</li>
+                        <li>💾 Capa de Datos (SQLite)</li>
+                    </ul>
+                    <p><strong>Despliegue:</strong> Un único nodo con separación lógica estricta entre capas</p>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: PRODUCTOS -->
+            <section id="productos" class="section">
+                <h2>Gestión de Productos</h2>
+                
+                <div class="form-section">
+                    <h3>Crear Nuevo Producto</h3>
+                    <form id="formProducto">
+                        <input type="text" placeholder="Nombre del producto" id="prodNombre" required>
+                        <select id="prodTipo" required>
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="collar">Collar</option>
+                            <option value="arete">Arete</option>
+                            <option value="manilla">Manilla</option>
+                            <option value="cartera">Cartera</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        <input type="text" placeholder="Descripción" id="prodDescripcion">
+                        <input type="text" placeholder="Materiales" id="prodMateriales">
+                        <input type="number" placeholder="Precio ($)" id="prodPrecio" step="0.01" required>
+                        <input type="number" placeholder="Stock" id="prodStock" value="0">
+                        <input type="number" placeholder="ID Artesana" id="prodArtesanaId">
+                        <button type="submit">Crear Producto</button>
+                    </form>
+                </div>
+
+                <div class="products-list">
+                    <h3>Catálogo de Productos</h3>
+                    <div id="productosContainer" class="grid-container">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: PEDIDOS -->
+            <section id="pedidos" class="section">
+                <h2>Gestión de Pedidos</h2>
+                
+                <div class="form-section">
+                    <h3>Registrar Nuevo Pedido</h3>
+                    <form id="formPedido">
+                        <input type="text" placeholder="Nombre del cliente" id="pedCliente" required>
+                        <input type="email" placeholder="Email del cliente" id="pedEmail">
+                        <input type="number" placeholder="Monto total ($)" id="pedMonto" step="0.01" required>
+                        <select id="pedForma" required>
+                            <option value="">Forma de pago...</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="transferencia">Transferencia</option>
+                            <option value="tarjeta">Tarjeta</option>
+                        </select>
+                        <button type="submit">Registrar Pedido</button>
+                    </form>
+                </div>
+
+                <div class="orders-section">
+                    <h3>Pedidos Registrados</h3>
+                    <div id="pedidosContainer" class="table-container">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>Estadísticas de Pedidos</h3>
+                    <div id="statsContainer" class="stats-grid">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: ARTESANAS -->
+            <section id="artesanas" class="section">
+                <h2>Gestión de Artesanas</h2>
+                
+                <div class="form-section">
+                    <h3>Registrar Nueva Artesana</h3>
+                    <form id="formArtesana">
+                        <input type="text" placeholder="Nombre completo" id="artNombre" required>
+                        <select id="artEspecialidad" required>
+                            <option value="">Especialidad...</option>
+                            <option value="bisutería">Bisutería</option>
+                            <option value="textiles">Textiles</option>
+                            <option value="cerámica">Cerámica</option>
+                            <option value="cuero">Cuero</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        <input type="tel" placeholder="Teléfono" id="artTelefono">
+                        <input type="email" placeholder="Email" id="artEmail">
+                        <button type="submit">Registrar Artesana</button>
+                    </form>
+                </div>
+
+                <div class="artesanas-list">
+                    <h3>Artesanas Registradas</h3>
+                    <div id="artesanasContainer" class="grid-container">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: EVENTOS -->
+            <section id="eventos" class="section">
+                <h2>Eventos y Ferias</h2>
+                
+                <div class="form-section">
+                    <h3>Crear Nuevo Evento</h3>
+                    <form id="formEvento">
+                        <input type="text" placeholder="Nombre del evento" id="evNombre" required>
+                        <input type="text" placeholder="Descripción" id="evDescripcion">
+                        <input type="date" id="evFecha" required>
+                        <input type="text" placeholder="Ubicación" id="evUbicacion">
+                        <button type="submit">Crear Evento</button>
+                    </form>
+                </div>
+
+                <div class="eventos-list">
+                    <h3>Eventos Próximos</h3>
+                    <div id="eventosContainer" class="grid-container">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Pie de página -->
+        <footer class="footer">
+            <p>&copy; 2025 Sistema de Gestión de Artesanías Saraguro | Arquitectura 3 Capas</p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
